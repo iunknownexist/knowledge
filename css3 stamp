@@ -1,0 +1,30 @@
+<div class="stamp">
+  <div class="contents">你好</div>
+</div>
+
+
+.stamp {
+  margin: 20px;
+  width: 280px;
+  display: block;
+  padding: 10px;
+  position: relative;
+  background: radial-gradient( transparent 0px, transparent 5px, #ff4444 5px, #ff4444 );
+  background-size: 20px 20px;
+  background-position: -10px -10px;
+}
+
+.stamp .contents {
+  background-color: #fff;
+}
+
+.stamp:after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  right: 5px;
+  bottom: 5px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
