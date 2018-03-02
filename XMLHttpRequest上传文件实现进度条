@@ -1,3 +1,36 @@
+在网页上传文件，最核心元素就是这个HTML DOM的FileUpload对象了。 
+<input type="file">
+其实在 HTML 文档中该标签每出现一次，一个 FileUpload 对象就会被创建。该标签包含一个按钮，用来打开文件选择对话框，以及一段文字显示选中的文件名或提示没有文件被选中。
+把这个标签放在<form>标签内，设置form的action为服务器目标上传地址，并点击submit按钮或通过JS调用form的submit()方法就可以实现最简单的文件上传了。
+
+<form id="uploadForm" method="POST" action="upload" enctype="multipart/form-data">
+    <input type="file" id="myFile" name="file"></input>
+    <input type="submit" value="提交"></input>
+</form>
+
+
+
+XMLHttpRequest Level 2
+
+那什么是Level 1？为什么不行？因为它有如下限制：
+    仅支持文本数据传输, 无法传输二进制数据.
+    传输数据时, 没有进度信息提示, 只能提示是否完成.
+    受浏览器 同源策略 限制, 只能请求同域资源.
+    没有超时机制, 不方便掌控ajax请求节奏.
+
+而XMLHttpRequest Level 2针对这些缺陷做出了改进：
+    支持二进制数据, 可以上传文件, 可以使用FormData对象管理表单.
+    提供进度提示, 可通过 xhr.upload.onprogress 事件回调方法获取传输进度.
+    依然受 同源策略 限制, 这个安全机制不会变. XHR2新提供 Access-Control-Allow-Origin 等headers, 设置为 * 时表示允许任何域名请求, 从而实现跨域CORS访问.
+    可以设置timeout 及 ontimeout, 方便设置超时时长和超时后续处理.
+    
+=> 目前, 主流浏览器基本上都支持XHR2, 除了IE系列需要IE10及更高版本. 因此IE10以下是不支持XHR2的.
+
+
+........ ........... 
+
+
+
 <script type="text/javascript">
         var xhr;
         var ot;//
@@ -88,7 +121,7 @@
 若想用jQuery 中的ajax实现的话，jQuery的 ajax 方法没有关于 progress 事件的操作，此时需要调用的XMLHttpRequest对象是指定progress 事件。
 
 $.ajax({
-    type: "POST",
+   type: "POST",
 　　url: "upload",
 　　data: formData ,　　//这里上传的数据使用了formData 对象
 　　processData : false, 
@@ -106,6 +139,10 @@ $.ajax({
 });
 
 
-出处：https://www.cnblogs.com/tianyuchen/p/5594641.html
 
+
+
+
+https://www.cnblogs.com/tianyuchen/p/5594641.html
+http://www.admin10000.com/document/13589.html
 
