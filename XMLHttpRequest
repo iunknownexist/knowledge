@@ -1,0 +1,18 @@
+var request = new XMLHttpRequest();
+
+request.open('GET', '/api/xxx');
+request.responseType = 'text';
+
+// onload事件 是在 onreadystatechange事件 中状态码变为4之后触发的
+request.onload = function () {
+   console.log(request.responseText)
+}  
+
+request.send();
+
+
+
+// onreadystatechange 
+// readyState
+// responseText
+// responseType
