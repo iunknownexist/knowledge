@@ -1,0 +1,132 @@
+JavaScript中的this比较灵活，根据在不同环境下，或者同一个函数在不同方式调用下，this都有可能是不同的。
+=> 但是有一个总的原则，那就是this指的是，调用函数的那个对象。
+
+
+
+一般的函数声明或者函数表达式，直接调用函数的话，this依然指向全局对象，在浏览器中这对象就是window，在node中这对象就是global。
+function test1 () {
+    console.log(this);
+}
+
+test1();  // this === window
+
+
+但是在严格模式下，一般函数调用的时候this指向undefined，这也是node为什么要用严格模式的一个原因。
+function f2(){  
+  'use strict'; // see strict mode
+  return this; 
+} 
+f2() === undefined; // true
+
+
+----- 对象中 ------ 
+在对象的方法中，被对象调用的时候，这时候this指向对象本身。例如下文 cat
+var cat = {
+    name: 'hello cat',
+    playing: function () { 
+        console.log('This is a cat, its name is \"' + this.name + '\", it is playing.');
+    }
+}
+
+cat.playing()
+// This is a cat, its name is "hello cat", it is playing.
+
+var playing = cat.playing
+playing();  // This is a cat, its name is "", it is playing.
+window.name = 'demo';
+playing(); // This is a cat, its name is "demo", it is playing.
+
+👇
+所以并不是看函数是怎么创建的，而是只要将函数作为对象的方法去调用，this就会指向这个对象。
+
+
+
+------ 对象原型链上的this --------
+var o = {f:function(){ return this.a + this.b; }};
+var p = Object.create(o);  // p.__proto__ 指向 o
+p.a = 1; 
+p.b = 4; 
+console.log(p.f()); // 5 
+👇
+原型链上的this可以拿到当前的对象（p）
+
+
+
+get/set方法中的this一般会指向get/set方法所在对象里面
+function modulus(){   
+   return Math.sqrt(this.re * this.re + this.im * this.im); 
+} 
+var o = { 
+  re: 1, 
+  im: -1, 
+  get phase(){      
+     return Math.atan2(this.im, this.re);    
+  } 
+}; 
+Object.defineProperty(o, 'modulus', {  //临时动态给o对象创建modules属性
+  get: modulus, enumerable:true, configurable:true}); 
+ 
+console.log(o.phase, o.modulus); 
+
+
+
+------- 构造函数中的this ------
+用 new 把 MyClass 作为构造函数调用的话，this会指向空的对象，并且这个对象的原型会指向 MyClass.prototype。
+但是调用的时候做了this.a = 37的赋值,所以最后this会作为返回值(没写return语句,或者return的是基本类型的话,会将this作为返回值)，第二个例子return语句返回了对象，那么就会将a = 38作为返回值
+function MyClass(){    
+   this.a = 37; 
+} 
+var o = new MyClass();  
+console.log(o.a); // 37 
+ 
+function C2(){    
+   this.a = 37;   
+   return {a : 38};  
+} 
+ 
+o = new C2();  
+console.log(o.a); // 38
+
+
+
+----- call/apply方法与this ------
+除了不同的调用方式外，函数对象有些方法能修改函数执行的this，比如call/apply。
+call和apply基本上没差别，只不过call传参的方式是扁平的，而apply是把一个数组传进去。
+
+什么时候用call和apply呢？
+比如我们想调用Object.prototype.toString,但是我们想指定某个this的时候，那我们就可以就用Object.prototype.toString.call(this)这样子的方式来调用些无法直接调用的方法。
+
+function add(c, d) {  
+   return this.a + this.b + c + d;  
+} 
+var o = {a: 1, b: 3}; 
+add.call(o, 5, 7); // 1 + 3 + 5 + 7 = 16     //第一个参数接收的是你想作为this的对象
+add.apply(o, [10, 20]); // 1 + 3 + 10 + 20 = 34 
+ 
+function bar() {  
+   console.log(Object.prototype.toString.call(this)); 
+} 
+bar.call(7); // "[object Number]"
+
+
+
+----- bind方法与this ------
+=> bind方法是es5开始提供的，所以ie9+才支持
+=> 如果一个方法使用bind绑定了一个对象，那么这个方法中的this指向当前bind的这个对象。
+function f() {  
+   return this.a;  
+} 
+ 
+var g = f.bind({a : "test"});   //想把某个对象作为this的时候，就把它传进去，得到一个新对象g
+console.log(g()); // test       //重复调用的时候，this已经指向bind参数。这对于我们绑定一次需要重复调用依然实现绑定的话，会比apply和call更加高效（看下面这个例子）
+ 
+var o = {a : 37, f : f, g : g};  
+console.log(o.f(), o.g()); // 37, test   
+//o.f()通过对象的属性调用，this指向对象o;比较特殊的是即使我们把新绑定的方法作为对象的属性调用，o.g()依然会按之前的绑定去走，所以答案是test不是g
+
+
+
+
+http://www.admin10000.com/document/9342.html
+
+
