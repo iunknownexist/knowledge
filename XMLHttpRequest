@@ -1,6 +1,19 @@
-var request = new XMLHttpRequest();
+https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX/Getting_Started
+https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+
+
+var request = null;
+
+if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
+    httpRequest = new XMLHttpRequest();
+} else if (window.ActiveXObject) { // IE 6 and older
+    httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+}
 
 request.open('GET', '/api/xxx');
+
+// 如果是post 需要在 send 前设置 MIME type
+// httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 request.responseType = 'text';
 
 // onload事件 是在 onreadystatechange事件 中状态码变为4之后触发的
@@ -13,6 +26,6 @@ request.send();
 
 
 // onreadystatechange 
-// readyState
+// readyState  request.DONE === 4 
 // responseText
 // responseType
