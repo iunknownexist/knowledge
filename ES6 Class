@@ -1,0 +1,236 @@
+原文：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes
+
+一个类的类体是一对花括号/大括号 {} 中的部分。这是你定义类成员的位置，如方法或构造函数。
+
+类实际上是个“特殊的函数”，就像你能够定义的函数表达式和函数声明一样，类语法有两个组成部分：类表达式和类声明。
+
+class Rectangle {
+    constructor (height, width) {
+        this.height = height;
+        this.width = width;
+    }
+}
+
+warn: 函数声明和类声明之间的一个重要区别是函数声明会声明提升，类声明不会。需要声明你的类，然后访问它，否则会抛出一个ReferenceError。
+
+
+
+
+
+一个类表达式是定义一个类的另一种方式。类表达式可以是被命名的或匿名的。赋予一个命名类表达式的名称是类的主体的本地名称。
+
+let Rectangle = class {
+    constructor (height, width) {
+        this.height = height;
+        this.width = width;
+    }
+};
+
+
+let Rectangle = class Reactangle {
+    constructor (height, width) {
+        this.height = height;
+        this.width = width;
+    }
+};
+
+warn: 类表达式也同样不能提升
+
+
+
+类声明和类表达式的主体都执行在严格模式下。
+
+构造函数
+构造函数方法是一个特殊的方法，其用于创建和初始化使用一个类创建的一个对象。一个类只能拥有一个名为 “constructor”的特殊方法。如果类包含多个构造函数的方法，则将抛出 一个SyntaxError 。
+一个构造函数可以使用 super 关键字来调用一个父类的构造函数
+
+
+--------------------------------------------------------------------
+
+原型方法（prototype）
+
+class Rectangle {
+    constructor (height, width) {
+        this.height = height;
+        this.width = width;
+    }
+
+    // Getter
+    get area() {
+        return this.calcArea();
+    }
+
+    // Method
+    calcArea() {
+        return this.height * this.width;
+    }
+}
+
+const square = new Rectangle(10, 10);
+console.log(square.area); // 100
+
+
+-----------------------------------------------------
+
+静态方法
+
+static 关键字用来定义一个类的一个静态方法。调用静态方法不需要实例化该类，但不能通过一个类实例调用静态方法。静态方法通常用于为一个应用程序创建工具函数。
+
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    static distance(a, b) {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+
+        return Math.hypot(dx, dy); // 三角形斜边距离
+    }
+}
+
+const p1 = new Point(5, 5); // {x: 5, y: 5}
+const p2 = new Point(10, 10); // {x: 10, y: 10}
+
+console.log(Point.distance(p1, p2));   // 7.0710678118654755
+
+
+----------------------------------------------
+
+用原型和静态方法装箱
+
+当一个对象调用静态或原型方法时，如果该对象没有“this”值（或“this”作为布尔，字符串，数字，未定义或null) ，那么“this”值在被调用的函数内部将为 undefined，不会发生自动装箱。
+
+class Animal { 
+  speak() {
+    return this;
+  }
+  static eat() {
+    return this;
+  }
+}
+
+let obj = new Animal();
+obj.speak(); // Animal {}
+let speak = obj.speak;
+speak(); // undefined
+
+Animal.eat() // class Animal
+let eat = Animal.eat;
+eat(); // undefined
+
+====>
+如果我们使用传统的基于函数的类来编写上述代码，那么基于调用该函数的“this”值将发生自动装箱。
+
+function Animal() { }
+
+Animal.prototype.speak = function() {
+  return this;
+}
+
+Animal.eat = function() {
+  return this;
+}
+
+let obj = new Animal();
+let speak = obj.speak;
+speak(); // global object  === window
+
+let eat = Animal.eat;
+eat(); // global object  === window
+
+
+--------------------------------------
+使用 extends 创建子类
+extends 关键字在类声明或类表达式中用于创建一个类作为另一个类的一个子类
+
+class Animal { 
+  constructor(name) {
+    this.name = name;
+  }
+  
+  speak() {
+    console.log(this.name + ' makes a noise.');
+  }
+}
+
+class Dog extends Animal {
+  speak() {
+    console.log(this.name + ' barks.');
+  }
+}
+
+var d = new Dog('Mitzie');
+// 'Mitzie barks.'
+d.speak();
+
+
+// super
+如果子类中有构造函数，那么构造函数中必须要有 super 函数。 super一定要出现在this之前。
+
+class Dog extends Animal {
+   constructor (name) {
+      super();
+   }
+}
+
+
+extents 也可以扩展基于函数的“类”
+
+function Animal (name) {
+  this.name = name;  
+}
+Animal.prototype.speak = function () {
+  console.log(this.name + ' makes a noise.');
+}
+
+class Dog extends Animal {
+  speak() {
+    super.speak();
+    console.log(this.name + ' barks.');
+  }
+}
+
+var d = new Dog('Mitzie');
+d.speak();
+// Mitzie makes a noise.
+// Mitzie barks.
+
+ === > ? 类不能扩展常规（不可构造/非构造的）对象。如果要继承常规对象，可以改用Object.setPrototypeOf():
+var Animal = {
+  speak() {
+    console.log(this.name + ' makes a noise.');
+  }
+};
+
+class Dog {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+
+=== > ? // setPrototypeOf, 将Dog的原型加到Animal上 
+Object.setPrototypeOf(Dog.prototype, Animal);// If you do not do this you will get a TypeError when you invoke speak
+
+var d = new Dog('Mitzie');
+d.speak(); // Mitzie makes a noise.
+
+
+var obj1 = {
+  method1() {
+    console.log("method 1");
+  }
+}
+
+var obj2 = {
+  method2() {
+   super.method1();
+  }
+}
+
+Object.setPrototypeOf(obj2, obj1);
+obj2.method2();  // logs "method 1"
+
+////// end ? ====== //// 
