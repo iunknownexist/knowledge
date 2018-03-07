@@ -4,8 +4,8 @@
 把这个标签放在<form>标签内，设置form的action为服务器目标上传地址，并点击submit按钮或通过JS调用form的submit()方法就可以实现最简单的文件上传了。
 
 <form id="uploadForm" method="POST" action="upload" enctype="multipart/form-data">
-    <input type="file" id="myFile" name="file"></input>
-    <input type="submit" value="提交"></input>
+    <input type="file" id="myFile" name="file"/>
+    <input type="submit" value="提交"/>
 </form>
 
 
