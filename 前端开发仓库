@@ -1,0 +1,91 @@
+前端开发仓库
+
+http://code.ciaoca.com/
+
+
+HTML & CSS
+CSS 选择器演示
+Flexible Box 演示
+HTML 常用标签演示
+Web 常用字体演示
+
+CSS 速查表
+CSS 中文字体 Unicode 编码表
+CSS 图片替换文字
+GitHub 按钮样式 (CSS3)
+Webkit 自定义滚动条样式
+前端开发基础知识 by 小叉 (PDF)
+
+JavaScript
+artDialog 对话框
+artTemplate 模板引擎
+cxDate 日期格式化
+cxValidation 移动端表单验证
+SeaJS 模块加载器
+Dewplayer 音乐播放器
+SWFObject Flash 增强插件
+ZeroClipboard 复制到剪贴板
+AlloyImage 图像处理引擎
+Exif.js 读取图像的元数据
+QRCode.js 生成二维码
+
+jQuery
+jQuery 文档
+jQuery 1.9 中文文档
+jQuery 1.6 中文文档
+jQuery 1.4 中文文档
+jQuery 1.3 中文文档
+
+基础类插件
+Color animation 色彩动画扩展
+cxDialog 对话框
+Easing 动画效果扩展
+Transit 过渡效果
+
+图像类插件
+Jcrop 图像裁剪
+Lazy Load 图片延迟加载
+Light Box 灯箱效果
+Light Box 2 灯箱效果
+
+展示类插件
+cxMenu 垂直多级滑动导航
+cxScroll 间歇式无缝滚动
+cxSlide 焦点图轮换
+kxbdMarquee 无缝滚动
+Portamento 滑动定位
+Wookmark 瀑布流布局
+
+表单类插件
+cxCalendar 日历选择器
+cxColor 颜色选择器
+cxSelect 多级联动下拉菜单
+Validation Engine 表单验证
+
+在线工具
+CSS 工具
+CSS 参考手册
+CSS 半透明背景色转换
+CSS 三角形生成器
+CSS & JS Hack 大全
+Webkit CSS 参考手册
+CSS3 工具
+CSS3 代码生成器
+CSS3 气泡对话框生成器
+CSS3 背景渐变色生成器：CSS matic, ColorZilla
+CSS3 阴影边框生成器
+CSS3 图片边框生成器
+CSS3 弹性盒模型生成器
+CSS3 动画工具
+JavaScript 工具
+JS 代码在线压缩
+JS 代码压缩 by Google
+jQuery 源代码查看工具（English）
+
+综合工具
+iBox 在线工具
+IcoMoon 图标字体生成器
+Markdown 在线编辑器：Socrates, StackEdit
+图片占位符：Placehold.it, Temp.im
+Postman API 接口测试
+Viewport Resizer 响应式布局测试
